@@ -1,41 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./styles/style.css";
-import NoteList from "./pages/HomePage";
 import NoteDetail from "./pages/NoteDetailPage";
 import AddNote from "./pages/AddPage";
 import ArchivedNotes from "./pages/ArchivedPage";
 import NotFound from "./pages/NotFoundPage";
-import { initialNotes } from "./utils/note";
+import {
+  getAllNotes,
+  addNote,
+  deleteNote,
+  archiveNote,
+  unarchiveNote,
+} from "./utils/note";
 import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
 
 function App() {
-  const [notes, setNotes] = useState(initialNotes);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    setNotes(getAllNotes());
+  }, []);
 
   const toggleArchive = (id) => {
-    setNotes((prevNotes) =>
-      prevNotes.map((note) =>
-        note.id === id ? { ...note, archived: !note.archived } : note
-      )
-    );
+    if (notes.find((note) => note.id === id).archived) {
+      unarchiveNote(id);
+    } else {
+      archiveNote(id);
+    }
+    setNotes(getAllNotes());
   };
 
-  const deleteNote = (id) => {
-    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+  const handleDeleteNote = (id) => {
+    deleteNote(id);
+    setNotes(getAllNotes());
+  };
+
+  const handleAddNote = ({ title, body }) => {
+    addNote({ title, body });
+    setNotes(getAllNotes());
   };
 
   return (
     <Router>
       <Navbar />
-
       <Routes>
         <Route
           path="/"
           element={
-            <NoteList
+            <HomePage
               notes={notes}
               toggleArchive={toggleArchive}
-              deleteNote={deleteNote}
+              deleteNote={handleDeleteNote}
             />
           }
         />
@@ -45,13 +61,13 @@ function App() {
             <NoteDetail
               notes={notes}
               toggleArchive={toggleArchive}
-              deleteNote={deleteNote}
+              deleteNote={handleDeleteNote}
             />
           }
         />
         <Route
           path="/notes/new"
-          element={<AddNote notes={notes} setNotes={setNotes} />}
+          element={<AddNote notes={notes} setNotes={handleAddNote} />}
         />
         <Route
           path="/notes/archived"
@@ -59,7 +75,7 @@ function App() {
             <ArchivedNotes
               notes={notes}
               toggleArchive={toggleArchive}
-              deleteNote={deleteNote}
+              deleteNote={handleDeleteNote}
             />
           }
         />

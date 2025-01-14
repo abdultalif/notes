@@ -1,47 +1,35 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import TextInput from "../components/Input";
+import TextAreaInput from "../components/TextArea";
 
-export default function AddNote({ notes, setNotes }) {
+export default function AddNotePage({ setNotes }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newNote = {
-      id: `notes-${+new Date()}`,
-      title,
-      body,
-      archived: false,
-      createdAt: new Date().toISOString(),
-    };
-    setNotes([newNote, ...notes]);
+    setNotes({ title, body });
     navigate("/");
   };
 
   return (
     <form onSubmit={handleSubmit} className="add-note-form">
-      <h1>catatan baru</h1>
-      <label>
-        Judul:
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          className="input-title"
-        />
-      </label>
-      <label>
-        Bodi:
-        <textarea
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          required
-          className="input-body"
-        ></textarea>
-      </label>
+      <h1>Catatan Baru</h1>
+      <TextInput
+        label="Judul"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <TextAreaInput
+        label="Bodi"
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+        required
+      />
       <button type="submit" className="btn-submit">
         Simpan Catatan
       </button>
@@ -49,7 +37,6 @@ export default function AddNote({ notes, setNotes }) {
   );
 }
 
-AddNote.propTypes = {
-  notes: PropTypes.array.isRequired,
+AddNotePage.propTypes = {
   setNotes: PropTypes.func.isRequired,
 };

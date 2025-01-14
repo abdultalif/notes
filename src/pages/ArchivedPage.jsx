@@ -1,32 +1,22 @@
 import PropTypes from "prop-types";
+import NoteList from "../components/NoteList";
 
-export default function ArchivedNotes({ notes, toggleArchive, deleteNote }) {
+export default function ArchivedNotesPage({
+  notes,
+  toggleArchive,
+  deleteNote,
+}) {
   const archivedNotes = notes.filter((note) => note.archived);
+
   return (
     <div>
-      <h1 className="page-title">Arsip Catatan</h1>
+      <h1>Archived Notes</h1>
       {archivedNotes.length > 0 ? (
-        <ul className="note-list">
-          {archivedNotes.map((note) => (
-            <li key={note.id} className="note-item">
-              <h3>{note.title}</h3>
-              <p>{new Date(note.createdAt).toLocaleString()}</p>
-              <p>{note.body}</p>
-              <button
-                className="btn-archive"
-                onClick={() => toggleArchive(note.id)}
-              >
-                Unarchive
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => deleteNote(note.id)}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        <NoteList
+          notes={archivedNotes}
+          toggleArchive={toggleArchive}
+          deleteNote={deleteNote}
+        />
       ) : (
         <p className="note-empty">Arsip Kosong.</p>
       )}
@@ -34,7 +24,7 @@ export default function ArchivedNotes({ notes, toggleArchive, deleteNote }) {
   );
 }
 
-ArchivedNotes.propTypes = {
+ArchivedNotesPage.propTypes = {
   notes: PropTypes.array.isRequired,
   toggleArchive: PropTypes.func.isRequired,
   deleteNote: PropTypes.func.isRequired,
