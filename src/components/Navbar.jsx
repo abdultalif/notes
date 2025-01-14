@@ -4,13 +4,13 @@ export default function Navbar() {
   return (
     <nav className="nav-menu">
       <Link to="/" className="menu-item">
-        Home
+        Catatan
       </Link>
       <Link to="/notes/new" className="menu-item">
-        Add Note
+        Tambah Catatan
       </Link>
       <Link to="/notes/archived" className="menu-item">
-        Archived Notes
+        Arsip
       </Link>
     </nav>
   );

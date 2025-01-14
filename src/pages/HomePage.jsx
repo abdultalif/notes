@@ -6,7 +6,7 @@ export default function NoteList({ notes, toggleArchive, deleteNote }) {
 
   return (
     <div>
-      <h1>Notes</h1>
+      <h1 className="page-title">Daftar catatan</h1>
       {activeNotes.length > 0 ? (
         <ul className="note-list">
           {activeNotes.map((note) => (
@@ -34,7 +34,7 @@ export default function NoteList({ notes, toggleArchive, deleteNote }) {
           ))}
         </ul>
       ) : (
-        <p>No active notes available.</p>
+        <p className="note-empty">Tidak ada catatan.</p>
       )}
     </div>
   );

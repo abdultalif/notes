@@ -22,9 +22,9 @@ export default function AddNote({ notes, setNotes }) {
 
   return (
     <form onSubmit={handleSubmit} className="add-note-form">
-      <h1>Add Note</h1>
+      <h1>catatan baru</h1>
       <label>
-        Title:
+        Judul:
         <input
           type="text"
           value={title}
@@ -34,7 +34,7 @@ export default function AddNote({ notes, setNotes }) {
         />
       </label>
       <label>
-        Body:
+        Bodi:
         <textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
@@ -43,7 +43,7 @@ export default function AddNote({ notes, setNotes }) {
         ></textarea>
       </label>
       <button type="submit" className="btn-submit">
-        Add Note
+        Simpan Catatan
       </button>
     </form>
   );

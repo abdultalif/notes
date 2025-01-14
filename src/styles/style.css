@@ -49,6 +49,12 @@ body {
   color: #00bcd4;
 }
 
+.page-title,
+.note-empty {
+  margin: 20px;
+  text-align: center;
+}
+
 .note-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

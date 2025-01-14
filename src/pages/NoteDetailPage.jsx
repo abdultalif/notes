@@ -9,15 +9,23 @@ export default function NoteDetail({ notes, toggleArchive, deleteNote }) {
 
   return (
     <div>
-      <h1>{note.title}</h1>
-      <p>{new Date(note.createdAt).toLocaleString()}</p>
-      <p>{note.body}</p>
-      <button className="btn-archive" onClick={() => toggleArchive(note.id)}>
-        {note.archived ? "Unarchive" : "Archive"}
-      </button>
-      <button className="btn-delete" onClick={() => deleteNote(note.id)}>
-        Delete
-      </button>
+      <h1 className="page-title">Detail Catatan</h1>
+      <ul className="note-list">
+        <li className="note-item">
+          {note.title}
+          <p>{new Date(note.createdAt).toLocaleString()}</p>
+          <p>{note.body}</p>
+          <button
+            className="btn-archive"
+            onClick={() => toggleArchive(note.id)}
+          >
+            {note.archived ? "Unarchive" : "Archive"}
+          </button>
+          <button className="btn-delete" onClick={() => deleteNote(note.id)}>
+            Delete
+          </button>
+        </li>
+      </ul>
     </div>
   );
 }

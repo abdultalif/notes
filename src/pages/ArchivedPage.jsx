@@ -4,7 +4,7 @@ export default function ArchivedNotes({ notes, toggleArchive, deleteNote }) {
   const archivedNotes = notes.filter((note) => note.archived);
   return (
     <div>
-      <h1>Archived Notes</h1>
+      <h1 className="page-title">Arsip Catatan</h1>
       {archivedNotes.length > 0 ? (
         <ul className="note-list">
           {archivedNotes.map((note) => (
@@ -28,7 +28,7 @@ export default function ArchivedNotes({ notes, toggleArchive, deleteNote }) {
           ))}
         </ul>
       ) : (
-        <p>No archived notes.</p>
+        <p className="note-empty">Arsip Kosong.</p>
       )}
     </div>
   );
