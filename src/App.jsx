@@ -1,88 +1,87 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import "./styles/style.css";
-import NoteDetail from "./pages/NoteDetailPage";
-import AddNote from "./pages/AddPage";
-import ArchivedNotes from "./pages/ArchivedPage";
-import NotFound from "./pages/NotFoundPage";
 import {
-  getAllNotes,
-  addNote,
-  deleteNote,
-  archiveNote,
-  unarchiveNote,
-} from "./utils/note";
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+  Outlet,
+} from "react-router-dom";
+import "./styles/style.css";
+import "./styles/auth.css";
+import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./pages/NotFoundPage";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import { LanguageProvider } from "./context/Language";
+import { ModeProvider } from "./context/Mode";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
+import ProtectedRoute from "./components/ProtectedRoute";
+import RedirectIfAuthenticated from "./components/RedirectIfAuthenticated";
+import ArchivedNotesPage from "./pages/ArchivedPage";
+import AddNotePage from "./pages/AddPage";
+import NoteDetailPage from "./pages/NoteDetailPage";
 
+function NotesLayout() {
+  return <Outlet />;
+}
 function App() {
-  const [notes, setNotes] = useState([]);
-
-  useEffect(() => {
-    setNotes(getAllNotes());
-  }, []);
-
-  const toggleArchive = (id) => {
-    if (notes.find((note) => note.id === id).archived) {
-      unarchiveNote(id);
-    } else {
-      archiveNote(id);
-    }
-    setNotes(getAllNotes());
-  };
-
-  const handleDeleteNote = (id) => {
-    deleteNote(id);
-    setNotes(getAllNotes());
-  };
-
-  const handleAddNote = ({ title, body }) => {
-    addNote({ title, body });
-    setNotes(getAllNotes());
-  };
+  const queryClient = new QueryClient();
 
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              notes={notes}
-              toggleArchive={toggleArchive}
-              deleteNote={handleDeleteNote}
-            />
-          }
-        />
-        <Route
-          path="/notes/:id"
-          element={
-            <NoteDetail
-              notes={notes}
-              toggleArchive={toggleArchive}
-              deleteNote={handleDeleteNote}
-            />
-          }
-        />
-        <Route
-          path="/notes/new"
-          element={<AddNote notes={notes} setNotes={handleAddNote} />}
-        />
-        <Route
-          path="/notes/archived"
-          element={
-            <ArchivedNotes
-              notes={notes}
-              toggleArchive={toggleArchive}
-              deleteNote={handleDeleteNote}
-            />
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
+    <LanguageProvider>
+      <ModeProvider>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <ConditionalNavbar />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <RedirectIfAuthenticated>
+                    <LoginPage />
+                  </RedirectIfAuthenticated>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <RedirectIfAuthenticated>
+                    <RegisterPage />
+                  </RedirectIfAuthenticated>
+                }
+              />
+
+              <Route
+                path="/notes"
+                element={
+                  <ProtectedRoute>
+                    <NotesLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<HomePage />} />
+                <Route path="new" element={<AddNotePage />} />
+                <Route path="archived" element={<ArchivedNotesPage />} />
+                <Route path=":id" element={<NoteDetailPage />} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <ToastContainer />
+          </Router>
+        </QueryClientProvider>
+      </ModeProvider>
+    </LanguageProvider>
   );
+}
+
+function ConditionalNavbar() {
+  const location = useLocation();
+  const isAuthPage =
+    location.pathname === "/" || location.pathname === "/register";
+
+  return !isAuthPage ? <Navbar /> : null;
 }
 
 export default App;

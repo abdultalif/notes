@@ -1,18 +1,18 @@
 import PropTypes from "prop-types";
 import NoteItem from "./NoteItem";
+import { useState } from "react";
+import TextInput from "./Input";
 
-export default function NoteList({ notes, toggleArchive, deleteNote }) {
+export default function NoteList({ notes }) {
+  const [search, setSearch] = useState("");
   return (
-    <ul className="note-list">
-      {notes.map((note) => (
-        <NoteItem
-          key={note.id}
-          note={note}
-          toggleArchive={toggleArchive}
-          deleteNote={deleteNote}
-        />
-      ))}
-    </ul>
+    <>
+      <ul className="note-list">
+        {notes.map((note) => (
+          <NoteItem key={note.id} note={note} />
+        ))}
+      </ul>
+    </>
   );
 }
 
@@ -26,6 +26,4 @@ NoteList.propTypes = {
       archived: PropTypes.bool.isRequired,
     })
   ).isRequired,
-  toggleArchive: PropTypes.func.isRequired,
-  deleteNote: PropTypes.func.isRequired,
 };

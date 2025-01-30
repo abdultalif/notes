@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
+import { useMode } from "../context/Mode";
 
 export default function TextAreaInput({ label, value, onChange, required }) {
+  const { mode } = useMode();
   return (
     <label>
       {label}:
@@ -8,7 +10,7 @@ export default function TextAreaInput({ label, value, onChange, required }) {
         value={value}
         onChange={onChange}
         required={required}
-        className="input-body"
+        className={`input-body ${mode}`}
       ></textarea>
     </label>
   );

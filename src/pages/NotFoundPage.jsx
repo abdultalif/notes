@@ -1,3 +1,13 @@
+import { useLanguage } from "../context/Language";
+import { useMode } from "../context/Mode";
+import { translationNotFound } from "../utils/translations";
+
 export default function NotFound() {
-  return <h1>404 - Page Not Found</h1>;
+  const { language } = useLanguage();
+  const { mode } = useMode();
+  return (
+    <h1 className={`not-found ${mode}`}>
+      404 - {translationNotFound[language].title}
+    </h1>
+  );
 }

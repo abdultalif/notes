@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
+import { useMode } from "../context/Mode";
 
 export default function TextInput({ label, value, onChange, required }) {
+  const { mode } = useMode();
   return (
     <label>
       {label}:
@@ -9,7 +11,7 @@ export default function TextInput({ label, value, onChange, required }) {
         value={value}
         onChange={onChange}
         required={required}
-        className="input-title"
+        className={`input-title ${mode}`}
       />
     </label>
   );
