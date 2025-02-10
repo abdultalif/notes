@@ -1,8 +1,8 @@
 # notes-react
 
-Submission Kelas Belajar Membuat Aplikasi Web dengan React di Dicoding
+Submission Kelas Belajar Fundamental Aplikasi Web dengan React di Dicoding
 
-🗒️ [Sertifikat Kompetensi Belajar Membuat Aplikasi Web dengan React.pdf](https://www.dicoding.com/certificates/KEXL1R22RXG2)
+🗒️ API Notes Dicoding : [https://notes-api.dicoding.dev/v1#/](https://notes-api.dicoding.dev/v1#/)
 
 ## Screenshot
 
